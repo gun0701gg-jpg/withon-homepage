@@ -95,6 +95,14 @@ img {
   font-weight: 700;
 }
 
+.brand-navy {
+  color: var(--navy);
+}
+
+.facility-black {
+  color: #000000;
+}
+
 .menu-btn {
   background: none;
   border: none;
