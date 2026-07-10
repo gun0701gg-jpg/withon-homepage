@@ -95,13 +95,13 @@ img {
   font-weight: 700;
 }
 
-.brand-navy {
-  color: var(--navy);
+.facility-title {
+  font-weight: 700;
+  color: var(--navy-dark);
 }
 
-.facility-black {
-  color: #000000;
-  font-weight: 700;
+.facility-orange {
+  color: var(--orange);
 }
 
 .menu-btn {
