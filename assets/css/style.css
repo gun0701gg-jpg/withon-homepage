@@ -327,11 +327,25 @@ img {
 
 /* info box */
 .info-box {
+  display: block;
   margin: 14px 16px 0;
   padding: 16px;
   background: var(--white);
   border-radius: 14px;
   border: 0.5px solid var(--border);
+  position: relative;
+}
+
+.info-box.card-clickable {
+  padding-right: 40px;
+}
+
+.info-box .info-arrow {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 16px;
+  color: #C9B79A;
 }
 
 .info-box p {
