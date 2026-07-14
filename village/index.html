@@ -41,39 +41,68 @@
     <p class="info-desc"><span class="with">with</span><span class="on">on</span> 빌리지는 어르신 한 분 한 분의 생활 리듬과 건강 상태를 살피며, <br>가족처럼 편안한 노후를 지원하는 요양원입니다. 간호사, 요양보호사, 물리치료사, 사회복지사가 함께 상주하며 24시간 돌봄 체계를 운영합니다.</p>
   </div>
 
+  <div class="staff-card">
+    <img src="../assets/images/village-guide.png" alt="위드온 빌리지 안내 캐릭터">
+    <div>
+      <p class="staff-role">시설 이용을 자세히 안내해드립니다</p>
+    </div>
+  </div>
+
   <section class="section">
     <p class="section-title">시설 안내</p>
+    <p style="font-size:11px; color:var(--text-muted); margin:-4px 4px 10px;">각 시설을 누르면 사진을 볼 수 있어요</p>
     <div class="card-list">
-      <div class="card">
+      <div class="card card-clickable" data-lightbox-img="../assets/images/facility-생활실.jpg" data-lightbox-alt="생활실">
         <div class="card-icon"><i class="ti ti-bed"></i></div>
         <div class="card-body">
           <p class="card-title">생활실</p>
           <p class="card-desc">채광과 환기를 고려한 쾌적한 생활 공간</p>
         </div>
+        <i class="ti ti-photo card-arrow"></i>
       </div>
-      <div class="card">
+      <div class="card card-clickable" data-lightbox-img="../assets/images/facility-재활치료.jpg" data-lightbox-alt="재활치료">
         <div class="card-icon"><i class="ti ti-heartbeat"></i></div>
         <div class="card-body">
-          <p class="card-title">물리치료실</p>
+          <p class="card-title">재활치료</p>
           <p class="card-desc">전문 물리치료사와 함께하는 재활 프로그램</p>
         </div>
+        <i class="ti ti-photo card-arrow"></i>
       </div>
-      <div class="card">
+      <div class="card card-clickable" data-lightbox-img="../assets/images/facility-인지치료.jpg" data-lightbox-alt="인지치료">
         <div class="card-icon"><i class="ti ti-friends"></i></div>
         <div class="card-body">
-          <p class="card-title">프로그램실</p>
+          <p class="card-title">인지치료</p>
           <p class="card-desc">인지활동, 여가 프로그램을 위한 공용 공간</p>
         </div>
+        <i class="ti ti-photo card-arrow"></i>
       </div>
-      <div class="card">
+      <div class="card card-clickable" data-lightbox-img="../assets/images/facility-산책정원.jpg" data-lightbox-alt="산책정원">
         <div class="card-icon"><i class="ti ti-sun"></i></div>
         <div class="card-body">
-          <p class="card-title">옥상정원</p>
-          <p class="card-desc">햇빛과 바람을 느낄 수 있는 야외 공간</p>
+          <p class="card-title">산책정원</p>
+          <p class="card-desc">옥상정원과 인근 공원을 산책하며 맑은 공기와 햇빛을 느낄 수 있는 공간</p>
         </div>
+        <i class="ti ti-photo card-arrow"></i>
       </div>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon"><i class="ti ti-chef-hat"></i></div>
+        <div class="card-body">
+          <p class="card-title">식사</p>
+          <p class="card-desc">어르신 건강을 살피는 식단 소개</p>
+        </div>
+        <i class="ti ti-chevron-right card-arrow"></i>
+      </a>
     </div>
   </section>
+
+  <div id="facility-lightbox" class="lightbox">
+    <div class="lightbox-backdrop"></div>
+    <div class="lightbox-content">
+      <button class="lightbox-close" aria-label="닫기"><i class="ti ti-x"></i></button>
+      <img id="lightbox-img" src="" alt="">
+      <p id="lightbox-caption" class="lightbox-caption"></p>
+    </div>
+  </div>
 
   <section class="section">
     <p class="section-title">입소 안내</p>
