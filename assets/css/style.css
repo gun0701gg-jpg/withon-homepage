@@ -363,13 +363,22 @@ img {
   gap: 12px;
 }
 
-.staff-card img {
-  width: 52px;
-  height: 52px;
+.staff-avatar {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--cream);
+}
+
+.staff-avatar img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: top center;
-  background: var(--cream);
+  transform: scale(1.7);
+  transform-origin: 50% 0%;
 }
 
 .staff-card .staff-name {
