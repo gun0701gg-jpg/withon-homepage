@@ -347,6 +347,140 @@ img {
   color: #8A5A2B;
 }
 
+/* mission */
+.mission {
+  padding: 30px 24px 8px;
+  text-align: center;
+}
+
+.mission h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy-dark);
+  line-height: 1.6;
+  margin: 0 0 10px;
+}
+
+.mission p {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* story teaser */
+.story-teaser {
+  display: block;
+  margin: 18px 16px 0;
+  padding: 22px 20px;
+  background: var(--navy-dark);
+  border-radius: 16px;
+}
+
+.story-teaser .quote-mark {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--orange-light);
+  margin: 0 0 8px;
+}
+
+.story-teaser p {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #D7DEEC;
+  margin: 0 0 14px;
+}
+
+.story-teaser .story-more {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--orange-light);
+}
+
+/* feature grid */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.feature-item {
+  background: var(--white);
+  border-radius: 14px;
+  border: 0.5px solid var(--border);
+  padding: 18px 14px;
+  text-align: center;
+}
+
+.feature-item i {
+  font-size: 24px;
+  color: var(--orange);
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.feature-item .feature-title {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0 0 3px;
+}
+
+.feature-item .feature-desc {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* spotlight */
+.spotlight {
+  margin: 12px 16px 0;
+  padding: 22px 20px;
+  border-radius: 16px;
+  background: var(--cream);
+}
+
+.spotlight.alt {
+  background: var(--white);
+  border: 0.5px solid var(--border);
+}
+
+.spotlight .spotlight-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.spotlight.alt .spotlight-icon {
+  background: var(--cream);
+}
+
+.spotlight .spotlight-icon i {
+  font-size: 22px;
+  color: var(--orange);
+}
+
+.spotlight h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy-dark);
+  margin: 0 0 8px;
+}
+
+.spotlight p {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
 /* info box */
 .info-box {
   display: block;
@@ -651,5 +785,47 @@ img {
 
   .site-footer {
     padding: 26px 40px 32px;
+  }
+
+  .mission {
+    padding: 40px 40px 8px;
+  }
+
+  .mission h2 {
+    font-size: 24px;
+  }
+
+  .mission p {
+    font-size: 14px;
+  }
+
+  .story-teaser {
+    margin: 24px 40px 0;
+    padding: 36px 44px;
+  }
+
+  .story-teaser p {
+    font-size: 14px;
+    max-width: 720px;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(6, 1fr);
+    margin: 0 40px;
+  }
+
+  .section .feature-grid {
+    margin: 0;
+  }
+
+  .spotlight-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 12px 40px 0;
+  }
+
+  .spotlight-row .spotlight {
+    margin: 0;
   }
 }
