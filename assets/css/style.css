@@ -50,7 +50,7 @@ img {
 
 .page {
   max-width: var(--max-width);
-  margin: 0 auto;
+  margin: 0;
   background: var(--cream-soft);
   min-height: 100vh;
   position: relative;
@@ -151,8 +151,9 @@ img {
   position: fixed;
   top: 0;
   bottom: 0;
-  left: max(0px, calc(50% - (var(--max-width) / 2)));
-  right: max(0px, calc(50% - (var(--max-width) / 2)));
+  left: 0;
+  width: 100%;
+  max-width: var(--max-width);
   z-index: 50;
   display: none;
 }
@@ -664,8 +665,9 @@ img {
   position: fixed;
   top: 0;
   bottom: 0;
-  left: max(0px, calc(50% - (var(--max-width) / 2)));
-  right: max(0px, calc(50% - (var(--max-width) / 2)));
+  left: 0;
+  width: 100%;
+  max-width: var(--max-width);
   z-index: 60;
   display: none;
   align-items: center;
