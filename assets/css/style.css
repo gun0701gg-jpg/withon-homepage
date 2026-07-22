@@ -236,6 +236,11 @@ img {
   margin: 0;
 }
 
+/* split hero (desktop only, voicehana.ai-style) */
+.split-hero {
+  display: none;
+}
+
 /* section */
 .section {
   padding: 18px 16px 6px;
@@ -757,6 +762,120 @@ img {
   .hero p {
     font-size: 15px;
     margin-top: 4px;
+  }
+
+  .page.has-split-hero .site-header,
+  .page.has-split-hero .hero,
+  .page.has-split-hero .mission {
+    display: none;
+  }
+
+  .split-hero {
+    display: flex;
+    min-height: 620px;
+  }
+
+  .split-hero-left {
+    width: 30%;
+    flex-shrink: 0;
+    background: var(--cream);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .split-hero-logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .split-hero-logo img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .split-hero-copy {
+    margin-top: 56px;
+  }
+
+  .split-hero-copy .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 1px;
+    margin: 0 0 12px;
+  }
+
+  .split-hero-copy h1 {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--navy-dark);
+    line-height: 1.4;
+    margin: 0 0 14px;
+  }
+
+  .split-hero-copy p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .split-hero-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 24px;
+  }
+
+  .split-hero-nav a {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--navy-dark);
+    background: var(--white);
+    padding: 8px 14px;
+    border-radius: 20px;
+  }
+
+  .split-hero-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .split-hero-right img {
+    width: 100%;
+    height: 62%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .split-hero-mission {
+    flex: 1;
+    background: var(--cream-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px 40px;
+  }
+
+  .split-hero-mission h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy-dark);
+    line-height: 1.55;
+    margin: 0 0 10px;
+  }
+
+  .split-hero-mission p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
   }
 
   .section {
