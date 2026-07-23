@@ -805,7 +805,7 @@ img {
   }
 
   .split-hero-left {
-    width: 30%;
+    width: 25%;
     flex-shrink: 0;
     background: var(--cream);
     padding: 32px;
