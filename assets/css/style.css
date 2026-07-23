@@ -814,7 +814,7 @@ img {
     position: sticky;
     top: 0;
     align-self: flex-start;
-    max-height: 100vh;
+    height: 100vh;
     overflow-y: auto;
   }
 
@@ -836,6 +836,7 @@ img {
 
   .split-hero-copy {
     margin-top: 56px;
+    text-align: center;
   }
 
   .split-hero-copy .eyebrow {
@@ -868,9 +869,9 @@ img {
 
   .split-hero-right img {
     width: 100%;
-    height: 660px;
+    height: 620px;
     object-fit: cover;
-    object-position: top center;
+    object-position: center 65%;
     display: block;
   }
 
