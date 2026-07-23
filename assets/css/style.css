@@ -26,6 +26,18 @@
   }
 }
 
+@media (min-width: 1500px) {
+  :root {
+    --max-width: 1440px;
+  }
+}
+
+@media (min-width: 1800px) {
+  :root {
+    --max-width: 1760px;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
