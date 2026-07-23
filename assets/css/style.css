@@ -389,7 +389,7 @@ img {
 }
 
 .mission p {
-  font-size: 12px;
+  font-size: 17px;
   color: var(--text-muted);
   line-height: 1.7;
   margin: 0;
@@ -895,7 +895,7 @@ img {
   }
 
   .split-hero-mission p {
-    font-size: 13px;
+    font-size: 20px;
     color: var(--text-muted);
     line-height: 1.7;
     margin: 0;
@@ -940,7 +940,7 @@ img {
   }
 
   .mission p {
-    font-size: 14px;
+    font-size: 24px;
   }
 
   .story-teaser {
