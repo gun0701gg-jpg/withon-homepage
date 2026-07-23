@@ -249,7 +249,8 @@ img {
 }
 
 /* split hero (desktop only, voicehana.ai-style) */
-.split-hero {
+.split-hero-left,
+.split-hero-right {
   display: none;
 }
 
@@ -791,9 +792,9 @@ img {
     display: none;
   }
 
-  .split-hero {
+  .split-page {
     display: flex;
-    min-height: 620px;
+    align-items: flex-start;
   }
 
   .split-hero-business {
@@ -810,6 +811,16 @@ img {
     padding: 32px;
     display: flex;
     flex-direction: column;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .split-scroll {
+    flex: 1;
+    min-width: 0;
   }
 
   .split-hero-logo {
@@ -850,32 +861,14 @@ img {
     line-height: 1.7;
   }
 
-  .split-hero-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: auto;
-    padding-top: 24px;
-  }
-
-  .split-hero-nav a {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--navy-dark);
-    background: var(--white);
-    padding: 8px 14px;
-    border-radius: 20px;
-  }
-
   .split-hero-right {
-    flex: 1;
     display: flex;
     flex-direction: column;
   }
 
   .split-hero-right img {
     width: 100%;
-    height: 62%;
+    height: 660px;
     object-fit: cover;
     object-position: top center;
     display: block;
