@@ -560,6 +560,37 @@ img {
   gap: 12px;
 }
 
+/* split tiles (photo preview pair) */
+.split-tiles {
+  display: flex;
+  gap: 10px;
+  margin: 14px 16px 0;
+}
+
+.split-tile {
+  flex: 1;
+  background: var(--white);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 12px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.split-tile i {
+  font-size: 26px;
+  color: var(--orange);
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.split-tile p {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0;
+}
+
 .staff-avatar {
   width: 56px;
   height: 56px;
