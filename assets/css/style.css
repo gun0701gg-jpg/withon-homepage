@@ -103,7 +103,7 @@ img {
   border-radius: 20px;
 }
 
-.top-links a:first-child {
+.top-links a.active {
   background: var(--orange);
   border-color: var(--orange);
   color: var(--cream-soft);
