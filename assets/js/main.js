@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-lightbox-img]').forEach(function (el) {
       el.addEventListener('click', function () {
         var alt = el.getAttribute('data-lightbox-alt') || '';
+        var caption = el.getAttribute('data-lightbox-caption') || alt;
         var srcs = el.getAttribute('data-lightbox-img').split(',').map(function (s) { return s.trim(); });
         lightboxImages.innerHTML = '';
         srcs.forEach(function (src) {
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
           img.alt = alt;
           lightboxImages.appendChild(img);
         });
-        if (lightboxCaption) lightboxCaption.textContent = alt;
+        if (lightboxCaption) lightboxCaption.textContent = caption;
         lightbox.classList.add('open');
       });
     });
