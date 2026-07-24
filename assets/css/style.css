@@ -248,6 +248,12 @@ img {
   margin: 0;
 }
 
+.hero .hero-desc {
+  font-size: 12.5px;
+  line-height: 1.7;
+  margin: 14px 0 0;
+}
+
 /* split hero (desktop only, voicehana.ai-style) */
 .split-hero-left,
 .split-hero-right {
@@ -825,6 +831,13 @@ img {
   .hero p {
     font-size: 15px;
     margin-top: 4px;
+  }
+
+  .hero .hero-desc {
+    font-size: 15px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .page.has-split-hero .site-header,
