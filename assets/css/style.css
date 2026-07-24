@@ -390,7 +390,8 @@ img {
 
 .mission p {
   font-size: 17px;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--navy-dark);
   line-height: 1.7;
   margin: 0;
 }
@@ -939,7 +940,8 @@ img {
 
   .split-hero-mission p {
     font-size: 20px;
-    color: var(--text-muted);
+    font-weight: 700;
+    color: var(--navy-dark);
     line-height: 1.7;
     margin: 0;
   }
