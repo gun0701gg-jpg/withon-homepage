@@ -785,9 +785,18 @@ img {
   z-index: 1;
 }
 
-.lightbox-content img {
-  max-width: 100%;
-  max-height: 70vh;
+.lightbox-images {
+  max-height: 80vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lightbox-images img {
+  width: 100%;
+  height: auto;
+  display: block;
   border-radius: 12px;
   background: var(--cream-soft);
 }

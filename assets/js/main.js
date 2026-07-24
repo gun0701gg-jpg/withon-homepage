@@ -19,16 +19,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var lightbox = document.getElementById('facility-lightbox');
   if (lightbox) {
-    var lightboxImg = document.getElementById('lightbox-img');
+    var lightboxImages = document.getElementById('lightbox-images');
     var lightboxCaption = document.getElementById('lightbox-caption');
     var lightboxBackdrop = lightbox.querySelector('.lightbox-backdrop');
     var lightboxClose = lightbox.querySelector('.lightbox-close');
 
     document.querySelectorAll('[data-lightbox-img]').forEach(function (el) {
       el.addEventListener('click', function () {
-        lightboxImg.src = el.getAttribute('data-lightbox-img');
-        lightboxImg.alt = el.getAttribute('data-lightbox-alt') || '';
-        if (lightboxCaption) lightboxCaption.textContent = el.getAttribute('data-lightbox-alt') || '';
+        var alt = el.getAttribute('data-lightbox-alt') || '';
+        var srcs = el.getAttribute('data-lightbox-img').split(',').map(function (s) { return s.trim(); });
+        lightboxImages.innerHTML = '';
+        srcs.forEach(function (src) {
+          var img = document.createElement('img');
+          img.src = src;
+          img.alt = alt;
+          lightboxImages.appendChild(img);
+        });
+        if (lightboxCaption) lightboxCaption.textContent = alt;
         lightbox.classList.add('open');
       });
     });
