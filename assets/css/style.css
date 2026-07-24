@@ -759,6 +759,10 @@ img {
   cursor: pointer;
 }
 
+.card-list .card.card-clickable {
+  background-size: cover;
+}
+
 /* lightbox */
 .lightbox {
   position: fixed;
