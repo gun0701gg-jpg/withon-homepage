@@ -88,7 +88,7 @@ img {
 
 .top-links {
   display: flex;
-  gap: 16px;
+  gap: 8px;
   padding: 0 20px 14px;
   background: var(--cream-soft);
 }
@@ -96,11 +96,17 @@ img {
 .top-links a {
   font-size: 12.5px;
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--navy-dark);
+  background: var(--white);
+  border: 0.5px solid var(--border);
+  padding: 7px 16px;
+  border-radius: 20px;
 }
 
 .top-links a:first-child {
-  color: var(--orange);
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--cream-soft);
   font-weight: 700;
 }
 
