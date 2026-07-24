@@ -30,11 +30,21 @@ document.addEventListener('DOMContentLoaded', function () {
         var caption = el.getAttribute('data-lightbox-caption') || alt;
         var srcs = el.getAttribute('data-lightbox-img').split(',').map(function (s) { return s.trim(); });
         lightboxImages.innerHTML = '';
-        srcs.forEach(function (src) {
+        srcs.forEach(function (src, i) {
+          var wrap = document.createElement('div');
+          wrap.className = 'lightbox-img-wrap';
           var img = document.createElement('img');
           img.src = src;
           img.alt = alt;
-          lightboxImages.appendChild(img);
+          wrap.appendChild(img);
+          var overlayText = el.getAttribute('data-lightbox-overlay-' + i);
+          if (overlayText) {
+            var overlay = document.createElement('p');
+            overlay.className = 'lightbox-img-overlay';
+            overlay.textContent = overlayText;
+            wrap.appendChild(overlay);
+          }
+          lightboxImages.appendChild(wrap);
         });
         if (lightboxCaption) lightboxCaption.textContent = caption;
         lightbox.classList.add('open');
