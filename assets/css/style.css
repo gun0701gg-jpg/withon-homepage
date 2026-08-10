@@ -588,6 +588,10 @@ img {
   line-height: 1.6;
 }
 
+.info-box .info-desc.greeting-text {
+  font-size: 13px;
+}
+
 /* staff row */
 .staff-card {
   margin: 14px 16px 0;
@@ -1021,6 +1025,22 @@ img {
 
   .section-title {
     font-size: 17px;
+  }
+
+  .core-services-title {
+    font-size: 24px;
+  }
+
+  .info-box .info-desc.greeting-text {
+    font-size: 20px;
+  }
+
+  .feature-item .feature-title {
+    font-size: 20px;
+  }
+
+  .feature-item .feature-desc {
+    font-size: 15px;
   }
 
   .card-list.grid-desktop {
