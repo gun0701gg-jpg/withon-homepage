@@ -451,7 +451,7 @@ img {
 }
 
 .story-teaser .story-more {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--orange-light);
 }
@@ -1086,6 +1086,10 @@ img {
   .story-teaser p {
     font-size: 20px;
     max-width: 720px;
+  }
+
+  .story-teaser .story-more {
+    font-size: 20px;
   }
 
   .feature-grid {
