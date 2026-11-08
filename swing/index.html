@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#111111">
+<title>스윙 분석기</title>
+<style>
+  :root { --bg:#111; --panel:#1c1c1e; --line:#2c2c2e; --text:#f2f2f2; --muted:#9a9a9f; --accent:#C67A22; }
+  [hidden] { display:none !important; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--text);
+    font-family:"Noto Sans KR",system-ui,-apple-system,sans-serif; overflow:hidden; user-select:none; -webkit-user-select:none; }
+  body { display:flex; flex-direction:column; height:100dvh; }
+  button { font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+
+  header { display:flex; align-items:center; gap:8px; padding:8px 12px; background:var(--panel); border-bottom:1px solid var(--line); }
+  header h1 { font-size:15px; margin:0 auto 0 0; font-weight:600; }
+  .btn { padding:6px 12px; border:1px solid var(--line); border-radius:8px; font-size:14px; background:#2a2a2c; white-space:nowrap; }
+  .btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  select.btn { appearance:none; }
+
+  #stage { flex:1; position:relative; min-height:0; display:flex; align-items:center; justify-content:center; background:#000; }
+  #wrap { position:relative; }
+  #wrap video, #wrap canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  canvas { touch-action:none; }
+  #empty { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; color:var(--muted); text-align:center; padding:20px; }
+  #empty .big { font-size:17px; color:var(--text); }
+
+  #tools { display:flex; align-items:center; gap:4px; overflow-x:auto; padding-bottom:6px; margin-bottom:4px; border-bottom:1px solid var(--line); scrollbar-width:none; }
+  .tool { flex:none; min-width:40px; height:38px; padding:0 6px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; }
+  .tool.on { background:#3a3a3c; outline:2px solid var(--accent); }
+  .tool svg { width:24px; height:24px; }
+  .swatch { width:22px; height:22px; border-radius:50%; border:2px solid #fff3; }
+  .swatch.on { border-color:#fff; }
+  #colors { display:flex; align-items:center; gap:8px; padding:0 8px; flex:none; }
+  .swatch { flex:none; }
+  .sep { width:1px; height:24px; background:var(--line); flex:none; }
+
+  #hud { position:absolute; left:10px; top:10px; background:rgba(0,0,0,.6); padding:4px 8px; border-radius:6px; font-variant-numeric:tabular-nums; font-size:14px; pointer-events:none; }
+
+  footer { background:var(--panel); border-top:1px solid var(--line); padding:8px 12px calc(8px + env(safe-area-inset-bottom)); }
+  #seek { width:100%; accent-color:var(--accent); height:28px; }
+  .ctrl { display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; }
+  .ctrl .round { width:48px; height:44px; border-radius:10px; background:#2a2a2c; display:flex; align-items:center; justify-content:center; font-size:13px; }
+  .ctrl .round.play { width:60px; background:var(--accent); color:#fff; }
+  .ctrl .round svg { width:22px; height:22px; fill:currentColor; }
+  .spacer { flex:1; }
+  .hint { color:var(--muted); font-size:12px; text-align:center; margin-top:4px; }
+  @media (max-height:500px){
+    .hint{display:none} header{padding:4px 10px} .btn{padding:4px 10px}
+    footer{padding-top:4px} .tool{height:32px} #tools{padding-bottom:4px;margin-bottom:2px}
+    #seek{height:20px} .ctrl .round{height:34px}
+  }
+  @media (max-width:600px){ .hint{display:none} header h1{font-size:14px} }
+</style>
+</head>
+<body>
+<header>
+  <h1>⛳ 스윙 분석기</h1>
+  <select id="fps" class="btn" title="프레임 속도">
+    <option value="auto">FPS 자동</option>
+    <option value="30">30fps</option>
+    <option value="60">60fps</option>
+    <option value="120">120fps</option>
+    <option value="240">240fps</option>
+  </select>
+  <label class="btn primary">영상 열기<input id="file" type="file" accept="video/*" hidden></label>
+</header>
+
+<main id="stage">
+  <div id="wrap" hidden>
+    <video id="video" playsinline muted preload="auto"></video>
+    <canvas id="cv"></canvas>
+  </div>
+  <div id="empty">
+    <div class="big">스윙 영상을 열어 주세요</div>
+    <div>휴대폰: 앨범에서 선택 또는 바로 촬영<br>PC: 버튼 클릭 또는 영상 파일을 여기로 끌어다 놓기</div>
+    <div style="font-size:12px">영상은 기기 안에서만 재생되며 어디에도 업로드되지 않습니다.</div>
+  </div>
+  <div id="hud" hidden></div>
+</main>
+
+<footer>
+  <div id="tools" hidden>
+    <button class="tool" data-tool="none" title="그리기 끔 (화면 탭 = 재생/정지)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 8-6 2-3 6z"/></svg></button>
+    <button class="tool on" data-tool="line" title="직선 (각도 표시)">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 20L20 4"/></svg></button>
+    <button class="tool" data-tool="arrow" title="화살표">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4l15 15M19 9v10H9"/></svg></button>
+    <button class="tool" data-tool="circle" title="원">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="8"/></svg></button>
+    <button class="tool" data-tool="rect" title="사각형">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="6" width="16" height="12" rx="1"/></svg></button>
+    <button class="tool" data-tool="free" title="자유 곡선">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 15c3-6 5-6 7 0s5 6 7 0 3-4 4-3"/></svg></button>
+    <span class="sep"></span><div id="colors"></div><span class="sep"></span>
+    <button class="tool" id="undo" title="되돌리기 (Ctrl+Z)">↶ 되돌리기</button>
+    <button class="tool" id="clear" title="모두 지우기">✕ 지우기</button>
+  </div>
+  <input id="seek" type="range" min="0" max="1000" value="0" step="1" disabled>
+  <div class="ctrl">
+    <button class="round" id="speed" title="재생 속도">1x</button>
+    <span class="spacer"></span>
+    <button class="round" id="back10" title="10프레임 뒤로">-10</button>
+    <button class="round" id="back1" title="1프레임 뒤로 (←)"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+    <button class="round play" id="play" title="재생/정지 (Space)"><svg viewBox="0 0 24 24" id="playIcon"><path d="M7 4v16l13-8z"/></svg></button>
+    <button class="round" id="fwd1" title="1프레임 앞으로 (→)"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+    <button class="round" id="fwd10" title="10프레임 앞으로">+10</button>
+    <span class="spacer"></span>
+    <button class="round" id="frameNo" title="현재 프레임" style="width:auto;padding:0 10px;font-variant-numeric:tabular-nums">F 0</button>
+  </div>
+  <div class="hint">단축키: ← → 1프레임 · Shift+← → 10프레임 · Space 재생/정지 · Ctrl+Z 되돌리기 · 휠 스크롤로도 프레임 이동</div>
+</footer>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const video = $('video'), cv = $('cv'), ctx = cv.getContext('2d');
+  const wrap = $('wrap'), stage = $('stage'), seek = $('seek');
+  const COLORS = ['#2f6bff', '#ff3b30', '#ffd60a', '#30d158', '#ffffff'];
+  const SPEEDS = [1, 0.5, 0.25, 0.1];
+
+  let tool = 'line', color = COLORS[0], speedIdx = 0;
+  let shapes = [], drawing = null;
+  let detectedFps = 0, fpsSamples = [], lastMediaTime = null;
+  let objectUrl = null;
+
+  // ---------- 영상 열기 ----------
+  function openFile(f) {
+    if (!f || !f.type.startsWith('video')) return;
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(f);
+    detectedFps = 0; fpsSamples = []; lastMediaTime = null;
+    shapes = [];
+    video.src = objectUrl;
+  }
+  $('file').addEventListener('change', e => openFile(e.target.files[0]));
+  stage.addEventListener('dragover', e => e.preventDefault());
+  stage.addEventListener('drop', e => { e.preventDefault(); openFile(e.dataTransfer.files[0]); });
+
+  video.addEventListener('loadedmetadata', () => {
+    $('empty').hidden = true; wrap.hidden = false; $('tools').hidden = false; $('hud').hidden = false;
+    seek.disabled = false;
+    layout();
+    // 첫 프레임 표시 (iOS 대응)
+    video.currentTime = 0.001;
+    // FPS 자동 감지: 잠깐 재생해서 프레임 간격 측정
+    if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) probeFps();
+  });
+
+  function probeFps() {
+    const wasMuted = video.muted; video.muted = true;
+    let n = 0;
+    const cb = (now, meta) => {
+      if (lastMediaTime !== null) {
+        const d = meta.mediaTime - lastMediaTime;
+        if (d > 0.001 && d < 0.1) fpsSamples.push(d);
+      }
+      lastMediaTime = meta.mediaTime;
+      if (++n < 12) video.requestVideoFrameCallback(cb);
+      else {
+        video.pause(); video.currentTime = 0; video.muted = wasMuted;
+        if (fpsSamples.length) {
+          fpsSamples.sort((a, b) => a - b);
+          const med = fpsSamples[Math.floor(fpsSamples.length / 2)];
+          detectedFps = Math.round(1 / med);
+        }
+        updateHud();
+      }
+    };
+    video.requestVideoFrameCallback(cb);
+    video.play().catch(() => {});
+  }
+
+  function fps() {
+    const v = $('fps').value;
+    if (v !== 'auto') return +v;
+    return detectedFps || 30;
+  }
+  $('fps').addEventListener('change', updateHud);
+
+  // ---------- 레이아웃: 영상 비율에 맞춰 캔버스 크기 ----------
+  function layout() {
+    if (!video.videoWidth) return;
+    const sw = stage.clientWidth, sh = stage.clientHeight;
+    const r = video.videoWidth / video.videoHeight;
+    let w = sw, h = sw / r;
+    if (h > sh) { h = sh; w = sh * r; }
+    wrap.style.width = w + 'px'; wrap.style.height = h + 'px';
+    const dpr = window.devicePixelRatio || 1;
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    redraw();
+  }
+  window.addEventListener('resize', layout);
+  new ResizeObserver(layout).observe(stage);
+
+  // ---------- 재생 / 프레임 이동 ----------
+  function step(n) {
+    video.pause();
+    const f = fps();
+    // 현재 프레임 번호 기준으로 정확히 이동 (프레임 중앙에 맞춤)
+    const cur = Math.floor(video.currentTime * f + 1e-6);
+    const target = Math.min(Math.max(cur + n, 0), Math.floor(video.duration * f));
+    video.currentTime = (target + 0.5) / f;
+  }
+  $('back1').onclick = () => step(-1);
+  $('fwd1').onclick = () => step(1);
+  $('back10').onclick = () => step(-10);
+  $('fwd10').onclick = () => step(10);
+  const togglePlay = () => { if (!video.src) return; video.paused ? video.play() : video.pause(); };
+  $('play').onclick = togglePlay;
+
+  $('speed').onclick = () => {
+    speedIdx = (speedIdx + 1) % SPEEDS.length;
+    video.playbackRate = SPEEDS[speedIdx];
+    $('speed').textContent = SPEEDS[speedIdx] + 'x';
+  };
+
+  video.addEventListener('play', () => $('playIcon').innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>');
+  video.addEventListener('pause', () => $('playIcon').innerHTML = '<path d="M7 4v16l13-8z"/>');
+
+  let seeking = false;
+  seek.addEventListener('input', () => {
+    seeking = true; video.pause();
+    video.currentTime = seek.value / 1000 * video.duration;
+  });
+  seek.addEventListener('change', () => seeking = false);
+
+  function updateHud() {
+    if (!video.duration) return;
+    const t = video.currentTime, f = fps();
+    const fr = Math.floor(t * f);
+    const s = Math.floor(t), cs = Math.floor((t - s) * 100);
+    const mm = String(Math.floor(s / 60)).padStart(2, '0'), ss = String(s % 60).padStart(2, '0');
+    $('hud').textContent = `${mm}:${ss}.${String(cs).padStart(2, '0')}  ·  ${f}fps${$('fps').value === 'auto' && !detectedFps ? '(추정)' : ''}`;
+    $('frameNo').textContent = 'F ' + fr;
+    if (!seeking) seek.value = Math.round(t / video.duration * 1000);
+  }
+  video.addEventListener('timeupdate', updateHud);
+  video.addEventListener('seeked', updateHud);
+  (function loop() { if (!video.paused) updateHud(); requestAnimationFrame(loop); })();
+
+  // ---------- 그리기 도구 UI ----------
+  document.querySelectorAll('[data-tool]').forEach(b => b.onclick = () => {
+    tool = b.dataset.tool;
+    document.querySelectorAll('[data-tool]').forEach(x => x.classList.toggle('on', x === b));
+  });
+  COLORS.forEach((c, i) => {
+    const s = document.createElement('button');
+    s.className = 'swatch' + (i === 0 ? ' on' : '');
+    s.style.background = c; s.title = '색상';
+    s.onclick = () => { color = c; document.querySelectorAll('.swatch').forEach(x => x.classList.toggle('on', x === s)); };
+    $('colors').appendChild(s);
+  });
+  $('undo').onclick = () => { shapes.pop(); redraw(); };
+  $('clear').onclick = () => { shapes = []; redraw(); };
+
+  // ---------- 그리기 (좌표는 0~1 비율로 저장 → 화면 크기 바뀌어도 유지) ----------
+  const W = () => cv.clientWidth, H = () => cv.clientHeight;
+  function pos(e) {
+    const r = cv.getBoundingClientRect();
+    return { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
+  }
+  cv.addEventListener('pointerdown', e => {
+    if (tool === 'none') { togglePlay(); return; }
+    cv.setPointerCapture(e.pointerId);
+    const p = pos(e);
+    drawing = { tool, color, pts: [p, p] };
+  });
+  cv.addEventListener('pointermove', e => {
+    if (!drawing) return;
+    const p = pos(e);
+    if (drawing.tool === 'free') drawing.pts.push(p); else drawing.pts[1] = p;
+    redraw();
+  });
+  const finish = () => {
+    if (!drawing) return;
+    const [a, b] = [drawing.pts[0], drawing.pts[drawing.pts.length - 1]];
+    if (drawing.tool === 'free' ? drawing.pts.length > 2 : Math.hypot((a.x - b.x) * W(), (a.y - b.y) * H()) > 4)
+      shapes.push(drawing);
+    drawing = null; redraw();
+  };
+  cv.addEventListener('pointerup', finish);
+  cv.addEventListener('pointercancel', finish);
+
+  function redraw() {
+    ctx.clearRect(0, 0, W(), H());
+    [...shapes, ...(drawing ? [drawing] : [])].forEach(drawShape);
+  }
+  function drawShape(s) {
+    const w = W(), h = H();
+    const P = s.pts.map(p => ({ x: p.x * w, y: p.y * h }));
+    const a = P[0], b = P[P.length - 1];
+    ctx.strokeStyle = s.color; ctx.fillStyle = s.color;
+    ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 3;
+    ctx.beginPath();
+    if (s.tool === 'line' || s.tool === 'arrow') {
+      ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      if (s.tool === 'arrow') {
+        const ang = Math.atan2(b.y - a.y, b.x - a.x), L = 16;
+        ctx.beginPath();
+        ctx.moveTo(b.x, b.y);
+        ctx.lineTo(b.x - L * Math.cos(ang - 0.45), b.y - L * Math.sin(ang - 0.45));
+        ctx.lineTo(b.x - L * Math.cos(ang + 0.45), b.y - L * Math.sin(ang + 0.45));
+        ctx.closePath(); ctx.fill();
+      } else {
+        // 직선 각도 표시 (수평 기준, 원본 영상 비율 기준)
+        let deg = Math.abs(Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI);
+        if (deg > 90) deg = 180 - deg;
+        ctx.shadowBlur = 0;
+        const label = deg.toFixed(1) + '°';
+        ctx.font = '600 13px system-ui,sans-serif';
+        const tw = ctx.measureText(label).width;
+        const lx = b.x + 8, ly = b.y - 8;
+        ctx.fillStyle = 'rgba(0,0,0,.65)'; ctx.fillRect(lx - 4, ly - 14, tw + 8, 19);
+        ctx.fillStyle = s.color; ctx.fillText(label, lx, ly);
+      }
+    } else if (s.tool === 'circle') {
+      const r = Math.hypot(b.x - a.x, b.y - a.y);
+      ctx.arc(a.x, a.y, r, 0, Math.PI * 2); ctx.stroke();
+    } else if (s.tool === 'rect') {
+      ctx.strokeRect(a.x, a.y, b.x - a.x, b.y - a.y);
+    } else if (s.tool === 'free') {
+      ctx.moveTo(P[0].x, P[0].y); P.forEach(p => ctx.lineTo(p.x, p.y)); ctx.stroke();
+    }
+    ctx.shadowBlur = 0;
+  }
+
+  // ---------- 키보드 / 휠 ----------
+  window.addEventListener('keydown', e => {
+    if (e.target.tagName === 'SELECT') return;
+    if (e.key === 'ArrowRight' || e.key === '.') { step(e.shiftKey ? 10 : 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === ',') { step(e.shiftKey ? -10 : -1); e.preventDefault(); }
+    else if (e.key === ' ') { togglePlay(); e.preventDefault(); }
+    else if ((e.ctrlKey || e.metaKey) && e.key === 'z') { shapes.pop(); redraw(); }
+  });
+  stage.addEventListener('wheel', e => { if (!video.src) return; e.preventDefault(); step(e.deltaY > 0 ? 1 : -1); }, { passive: false });
+})();
+</script>
+</body>
+</html>
