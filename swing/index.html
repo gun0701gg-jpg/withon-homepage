@@ -55,9 +55,21 @@
     #seek{height:20px} .ctrl .round{height:34px}
   }
   @media (max-width:600px){ .hint{display:none} header h1{font-size:14px} }
+  /* 비밀번호 잠금 화면 */
+  #lock { position:fixed; inset:0; z-index:100; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:20px; }
+  #lock .title { font-size:17px; font-weight:600; }
+  #pin { width:180px; font-size:28px; letter-spacing:12px; text-align:center; padding:10px; border-radius:12px; border:1px solid var(--line); background:#2a2a2c; color:var(--text); outline:none; }
+  #pin:focus { border-color:var(--accent); }
+  #lockMsg { color:#ff6b60; font-size:14px; min-height:20px; }
+  body.locked > header, body.locked > main, body.locked > footer { visibility:hidden; }
 </style>
 </head>
-<body>
+<body class="locked">
+<div id="lock">
+  <div class="title">🔒 비밀번호를 입력하세요</div>
+  <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" autofocus>
+  <div id="lockMsg"></div>
+</div>
 <header>
   <h1>⛳ 스윙 분석기</h1>
   <select id="fps" class="btn" title="프레임 속도">
@@ -116,6 +128,32 @@
   <div class="hint">단축키: ← → 1프레임 · Shift+← → 10프레임 · Space 재생/정지 · Ctrl+Z 되돌리기 · 휠 스크롤로도 프레임 이동</div>
 </footer>
 
+<script>
+// 비밀번호 = 접속한 날짜의 월일 4자리 (예: 11월 8일 → 1108). 통과하면 그날 하루 동안 다시 묻지 않음.
+(() => {
+  const d = new Date();
+  const today = String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+  const key = 'swingUnlocked';
+  let saved = null;
+  try { saved = localStorage.getItem(key); } catch (e) {}
+  const unlock = () => { document.body.classList.remove('locked'); document.getElementById('lock').remove(); };
+  if (saved === d.toDateString()) { unlock(); return; }
+  const pin = document.getElementById('pin'), msg = document.getElementById('lockMsg');
+  pin.focus();
+  pin.addEventListener('input', () => {
+    pin.value = pin.value.replace(/\D/g, '');
+    msg.textContent = '';
+    if (pin.value.length < 4) return;
+    if (pin.value === today) {
+      try { localStorage.setItem(key, d.toDateString()); } catch (e) {}
+      unlock();
+    } else {
+      msg.textContent = '비밀번호가 틀렸습니다';
+      pin.value = '';
+    }
+  });
+})();
+</script>
 <script>
 (() => {
   const $ = id => document.getElementById(id);
