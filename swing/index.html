@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#111111">
-<title>스윙 분석기</title>
+<title>건이의 스윙분석기</title>
 <style>
   :root { --bg:#111; --panel:#1c1c1e; --line:#2c2c2e; --text:#f2f2f2; --muted:#9a9a9f; --accent:#C67A22; }
   [hidden] { display:none !important; }
@@ -17,7 +17,8 @@
   button { font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
 
   header { display:flex; align-items:center; gap:8px; padding:8px 12px; background:var(--panel); border-bottom:1px solid var(--line); }
-  header h1 { font-size:15px; margin:0 auto 0 0; font-weight:600; }
+  header h1 { font-size:15px; margin:0 auto 0 0; font-weight:600; display:flex; align-items:center; gap:6px; }
+  header h1 .ball { width:18px; height:18px; flex:none; }
   .btn { padding:6px 12px; border:1px solid var(--line); border-radius:8px; font-size:14px; background:#2a2a2c; white-space:nowrap; }
   .btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
   select.btn { appearance:none; }
@@ -71,7 +72,7 @@
   <div id="lockMsg"></div>
 </div>
 <header>
-  <h1>⛳ 스윙 분석기</h1>
+  <h1><svg class="ball" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#fff" stroke="#bbb" stroke-width="1"/><g fill="#c8c8c8"><circle cx="7" cy="6.5" r="1.1"/><circle cx="11" cy="5.5" r="1.1"/><circle cx="14" cy="8" r="1.1"/><circle cx="9.5" cy="9.5" r="1.1"/><circle cx="6" cy="10.5" r="1.1"/><circle cx="13" cy="12" r="1.1"/><circle cx="9" cy="13.5" r="1.1"/><circle cx="5.8" cy="14.2" r="0.9"/><circle cx="12.2" cy="15.6" r="0.9"/></g></svg>건이의 스윙분석기</h1>
   <select id="fps" class="btn" title="프레임 속도">
     <option value="auto">FPS 자동</option>
     <option value="30">30fps</option>
